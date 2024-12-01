@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/*------------ Background and Overlay ------------*/
+.container-fluid {
+    background-image: url('img/ncstt.png');
+    background-size: cover; /* Ensure the background covers the entire container */
+    background-repeat: no-repeat;
+    background-position: center center; /* Keep the image centered */
+    position: relative;
+    height: 100vh; /* Ensure full viewport height */
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.103); /* Dark overlay to improve text visibility */
+    z-index: 1;
+}
+
+.error {
+	background: #F2DEDE;
+	color: #A94442;
+	padding: 10px;
+	width: 95%;
+	border-radius: 5px;
+	margin: 20px auto;
+ }
+ 
+/*------------ Login container ------------*/
+.box-area {
+    z-index: 2;
+    width: 700px;
+    margin-left: 30px;
+}
+
+/*------------ Left box ------------*/
+.left-box {
+    background: #103cbe;
+    padding: 20px;
+}
+
+.left-box p {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.left-box small {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/*------------ Right box ------------*/
+.right-box {
+    padding: 4px 3px 4px 4px;
+}
+
+/*------------ Custom Placeholder ------------*/
+::placeholder {
+    font-size: 14px;
+}
+
+.rounded-4 {
+    border-radius: 20px;
+}
+
+.rounded-5 {
+    border-radius: 30px;
+}
+
+
+
+/*------------ For small screens ------------*/
+@media only screen and (max-width: 768px) {
+    .container-fluid {
+        background-size: auto 100%; /* Make the background image auto scale with height */
+        background-position: 75% center; /* Adjust background position on small screens */
+        
+    }
+
+    .box-area {
+        flex-direction: column; /* Stack boxes vertically */
+        margin: 0; /* Remove left and right margin */
+        width: 80%; /* Box width smaller on mobile */
+        max-width: none; /* No maximum width on mobile */
+        padding: 1rem;
+        position: absolute; /* Allow absolute positioning */
+        top: 50%; /* Position box vertically centered */
+        left: 50%; /* Position box horizontally centered */
+        transform: translate(-50%, -50%); /* Adjust the box to be perfectly centered */
+    }
+
+
+    .left-box {
+        padding: 0;
+        height: 225px;
+        overflow: hidden;
+    }
+
+    .right-box {
+        padding: 20px;
+    }
+
+    .right-box .input-group.mb-3 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .right-box .form-check {
+        margin-right: 10px; /* Space between checkbox and link */
+    }
+
+     /* ------------ Make the font smaller for the "Remember Me" and "Forgot Password" link on small screens ------------ */
+     .right-box .form-check-label, 
+     .right-box .forgot a {
+         font-size: 14px; /* Adjust font size for smaller screens */
+     }
+}
