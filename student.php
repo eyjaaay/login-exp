@@ -1,9 +1,12 @@
 <?php 
 session_start();
 
-if (isset($_POST['uname']) && isset($_POST['password'])) {
+if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && isset($_SESSION['role'])) {
+    $role = $_SESSION['role'];
+    echo "<script>console.log('User Role: " . $role . "');</script>";
 
- ?>
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +18,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin - Dashboard</title>
+    <title>Student - Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -93,7 +96,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $_SESSION['fname']; ?> </span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $_SESSION['name']; ?> </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -129,7 +132,8 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Admin</div>
+                                                Admin
+                                            </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
                                         </div>
                                         <div class="col-auto">
@@ -178,6 +182,13 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
                 </div>
             </div>
             <!-- End of Main Content -->
+                                    <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+           
+
+            </div>  
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">

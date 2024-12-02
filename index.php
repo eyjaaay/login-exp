@@ -37,10 +37,10 @@
 						</div>
 						<form action="login.php" method="post">
 							<div class="input-group mb-2">
-								<input type="text" name="uname" class="form-control form-control-lg bg-light fs-4" placeholder="2023-12345">
+								<input type="text" name="uname" class="form-control form-control-lg bg-light fs-4" placeholder="2023-12345" autocomplete="username">
 							</div>
 							<div class="input-group mb-2">
-								<input type="current-password" name="password" class="form-control form-control-lg bg-light fs-4" placeholder="Password">
+								<input type="password" name="password" class="form-control form-control-lg bg-light fs-4" placeholder="Password" autocomplete="current-password">
 							</div>
 							<div class="input-group mb-3 d-flex justify-content-between p-2">
 								<div class="form-check">

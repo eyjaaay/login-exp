@@ -16,9 +16,11 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
 
 	if (empty($uname)) {
 		header("Location: index.php?error=User Name is required");
+		session_destroy();
 	    exit();
 	}else if(empty($pass)){
         header("Location: index.php?error=Password is required");
+		session_destroy();
 	    exit();
 	}else{
 		$sql = "SELECT * FROM users WHERE user_name='$uname' AND password='$pass'";
@@ -36,26 +38,24 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
             	// Redirect based on user role
                 if ($row['role'] === 'admin') {
                     header("Location: home.php");  // Redirect admin to home.php
-                    exit();
-                } else if ($row['role'] === 'teacher') {
+                } else if ($row['role'] == 'teacher') {
                     header("Location: teacher.php");  // Redirect teacher to teacher.php
-                    exit();
-                } else if ($row['role'] === 'student') {
+                } else if ($row['role'] == 'student') {
                     header("Location: student.php");  // Redirect student to student.php
-                    exit();
                 } else {
                     // If role is not recognized, log the user out and show an error
                     session_unset();
                     session_destroy();
                     header("Location: index.php?error=Unknown role");
-                    exit();
                 }
             }else{
 				header("Location: index.php?error=Incorect User name or password");
+				session_destroy();
 		        exit();
 			}
 		}else{
 			header("Location: index.php?error=Incorect User name or password");
+			session_destroy();
 	        exit();
 		}
 	}

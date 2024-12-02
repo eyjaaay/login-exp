@@ -1,9 +1,26 @@
 <?php 
 session_start();
 
-if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
+if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && isset($_SESSION['role'])) {
+    $role = $_SESSION['role'];
+    echo "<script>console.log('User Role: " . $role . "');</script>";
 
- ?>
+    // Database connection
+$servername = "localhost"; // Your database server
+$username = "root";        // Your database username
+$password = "admin";            // Your database password
+$dbname = "test_db"; // Your database name
+
+// Create connection
+$con = mysqli_connect($servername, $username, $password, $dbname);
+
+// Check connection
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,15 +31,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    
+    <!-- JS source script for table-->
+    <script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script defer src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+    <script defer src="script.js" ></script>
 
     <title>Admin - Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
@@ -68,12 +89,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Add user</h6>
-                        <a class="collapse-item" href="#">Add Admin</a>
-                        <a class="collapse-item" href="#">Add Teacher</a>
-                        <a class="collapse-item" href="#">Add Student</a>
+                        <a class="collapse-item" href="#">Admin</a>
+                        <a class="collapse-item" href="#">Teacher</a>
+                        <a class="collapse-item" href="#">Student</a>
                     </div>
                 </div>
+            <li>
             <!-- Divider -->
             <hr class="sidebar-divider">
         </ul>
@@ -123,58 +144,190 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                     <!-- Content Row -->
                     <div class="row">
                         <!-- Admin -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Admin</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                            <div class="text-s font-weight-bold text-primary text-uppercase mb-1">
+                                                Admin
+                                            </div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800">
+                                                <?php 
+                                                    // SQL query to count users by role
+                                                    $query = "SELECT role, COUNT(*) AS role_count FROM users GROUP BY role";
+
+                                                    // Execute the query
+                                                    $query_run = mysqli_query($con, $query);
+
+                                                    // Initialize counts for each role
+                                                    $admin_count = 0;
+
+                                                    // Fetch results
+                                                    while ($row = mysqli_fetch_assoc($query_run)) {
+                                                        if ($row['role'] == 'admin') {
+                                                            $admin_count = $row['role_count'];
+                                                        }
+                                                    }
+                                                    // Display the counts
+                                                    echo "<h3 class='mb-0 font-weight-bold text-gray-800'>" . $admin_count . "</h3>";
+                                                ?>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-user-lock fa-2x text-gray-300"></i>
+                                            <i class="fas fa-user-lock fa-2x text-gray-500"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <!-- Teacher Count -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div class="text-s font-weight-bold text-success text-uppercase mb-1">
                                                 Teacher</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800">
+                                                <?php 
+                                                    // SQL query to count users by role
+                                                    $query = "SELECT role, COUNT(*) AS role_count FROM users GROUP BY role";
+
+                                                    // Execute the query
+                                                    $query_run = mysqli_query($con, $query);
+
+                                                    // Initialize counts for each role
+                                                    $teacher_count = 0;
+
+                                                    // Fetch results
+                                                    while ($row = mysqli_fetch_assoc($query_run)) {
+                                                        if ($row['role'] == 'teacher') {
+                                                            $teacher_count = $row['role_count'];
+                                                        }
+                                                    }
+                                                    // Display the counts
+                                                    echo "<h3 class='mb-0 font-weight-bold text-gray-800'>" . $teacher_count . "</h3>";
+                                                ?>
+                                            </div>
                                         </div>  
                                         <div class="col-auto">
-                                            <i class="fas fa-user-tie fa-2x text-gray-300"></i>
+                                            <i class="fas fa-user-tie fa-2x text-gray-500"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Student Count -->
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            <div class="text-s font-weight-bold text-warning text-uppercase mb-1">
                                                 Students</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800">
+                                                <?php
+                                                    // SQL query to count users by role
+                                                    $query = "SELECT role, COUNT(*) AS role_count FROM users GROUP BY role";
+
+                                                    // Execute the query
+                                                    $query_run = mysqli_query($con, $query);
+
+                                                    // Initialize counts for each role
+                                                    $student_count = 0;
+
+                                                    // Fetch results
+                                                    while ($row = mysqli_fetch_assoc($query_run)) {
+                                                        if ($row['role'] == 'student') {
+                                                            $student_count = $row['role_count'];
+                                                        }
+                                                    }
+                                                    // Display the counts
+                                                    echo "<h3 class='mb-0 font-weight-bold text-gray-800'>" . $student_count . "</h3>";
+
+                                                    // Close the connection after the operation
+                                                    mysqli_close($con);
+                                                ?>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                                            <i class="fas fa-users fa-2x text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-s font-weight-bold text-info text-uppercase mb-1">Subject
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h4 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-500"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!------ Table Area ---------->
+                    <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">User lists</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                            <th></th>
+                                            <th>Age</th>
+                                            <th>Start date</th>
+                                            <th>Salary</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Tiger Nixon</td>
+                                            <td>System Architect</td>
+                                            <td>Edinburgh</td>
+                                            <td>61</td>
+                                            <td>2011/04/25</td>
+                                            <td>$320,800</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Donna Snider</td>
+                                            <td>Customer Support</td>
+                                            <td>New York</td>
+                                            <td>27</td>
+                                            <td>2011/01/25</td>
+                                            <td>$112,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+
                 </div>
             </div>
             <!-- End of Main Content -->
